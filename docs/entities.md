@@ -45,3 +45,18 @@
 **What it represents:** A message sent to a User about their queue status.
 
 **Reason to exist:** It allows QueueLess to inform customers about events such as being called, approaching their turn, or having their ticket status changed.
+
+
+## User Role Design
+
+QueueLess uses a single User entity for all types of users.
+
+The User table has a `role` enum with three possible values:
+
+- `CUSTOMER` — a customer who joins queues.
+- `STAFF` — staff members who manage queues.
+- `ADMIN` — administrators who manage organizations and system-level operations.
+
+There is no separate Staff table.
+
+If staff-specific information is required in the future, a separate `StaffProfile` entity can be introduced with a foreign key referencing the User.
