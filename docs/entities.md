@@ -60,3 +60,14 @@ The User table has a `role` enum with three possible values:
 There is no separate Staff table.
 
 If staff-specific information is required in the future, a separate `StaffProfile` entity can be introduced with a foreign key referencing the User.
+
+
+## Queue Entry Status Decisions
+
+### SKIPPED
+
+`SKIPPED` is a terminal state. Once a queue entry is skipped, it is considered gone from the current queue. If the customer wants service again, they must join the queue again.
+
+### NO_SHOW
+
+`NO_SHOW` can only be reached from `CALLED`. A customer is marked as `NO_SHOW` only after their token has been called and they do not appear.
