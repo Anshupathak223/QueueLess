@@ -71,3 +71,32 @@ If staff-specific information is required in the future, a separate `StaffProfil
 ### NO_SHOW
 
 `NO_SHOW` can only be reached from `CALLED`. A customer is marked as `NO_SHOW` only after their token has been called and they do not appear.
+
+
+## Foreign Key Relationships
+
+Organization (1) ──< Service (many)
+
+Service (1) ──< Queue (many)
+
+Queue (1) ──< QueueEntry (many)
+
+User (1) ──< QueueEntry (many)
+
+User (1) ──< Notification (many)
+
+## Foreign Keys and Delete Behavior
+
+| Foreign Key | Parent | On Parent Delete |
+|---|---|---|
+| Service.organizationId | Organization | CASCADE |
+| Queue.serviceId | Service | CASCADE |
+| QueueEntry.queueId | Queue | RESTRICT |
+| QueueEntry.userId | User | RESTRICT |
+| Notification.userId | User | CASCADE |
+
+### Design Notes
+
+QueueEntry records are historical business records and should not be removed when a queue or user is removed.
+
+QueueEntry deletion should therefore be restricted. Queue entries will normally be preserved and their status changed instead of being hard-deleted.
