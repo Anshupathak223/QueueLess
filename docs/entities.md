@@ -100,3 +100,38 @@ User (1) ──< Notification (many)
 QueueEntry records are historical business records and should not be removed when a queue or user is removed.
 
 QueueEntry deletion should therefore be restricted. Queue entries will normally be preserved and their status changed instead of being hard-deleted.
+
+## QueueEntry State Transitions
+
+QueueEntry status changes are controlled by the following state-transition rules:
+
+| Current Status | Allowed Next Status |
+|---|---|
+| WAITING | CALLED, CANCELLED, SKIPPED |
+| CALLED | SERVING, NO_SHOW |
+| SERVING | COMPLETED |
+| COMPLETED | None |
+| CANCELLED | None |
+| SKIPPED | None |
+| NO_SHOW | None |
+
+### State Transition Rules
+
+WAITING → CALLED  
+WAITING → CANCELLED  
+WAITING → SKIPPED  
+
+CALLED → SERVING  
+CALLED → NO_SHOW  
+
+SERVING → COMPLETED  
+
+COMPLETED, CANCELLED, SKIPPED, and NO_SHOW are terminal states.
+
+### Design Decisions
+
+`SKIPPED` is a terminal state. A skipped customer is removed from the current queue and must join again if they still require the service.
+
+`NO_SHOW` can only be reached from `CALLED`. A customer is marked as NO_SHOW only after their token has been called and they do not appear.
+
+QueueEntry status changes must follow these transitions. The application should not allow arbitrary status changes.
