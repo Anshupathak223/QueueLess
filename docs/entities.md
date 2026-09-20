@@ -1,0 +1,47 @@
+# QueueLess — Database Entities
+
+## 1. User
+
+**What it represents:** Anyone who logs into QueueLess — customer, staff, or admin.
+
+**Reason to exist:** A single User table allows all users to authenticate through the same system while the `role` field determines their permissions.
+
+---
+
+## 2. Organization
+
+**What it represents:** The business or institution running queues, such as a clinic, bank branch, or government office.
+
+**Reason to exist:** It is the top-level entity that owns and organizes the services offered to customers.
+
+---
+
+## 3. Service
+
+**What it represents:** A specific service offered by an organization, such as "Passport Renewal" or "Doctor Consultation."
+
+**Reason to exist:** It defines what customers are joining a queue for and belongs to one Organization.
+
+---
+
+## 4. Queue
+
+**What it represents:** One day's operating queue for a particular Service.
+
+**Reason to exist:** It represents the active queue for a service and allows token numbers and queue status to reset daily while preserving historical records.
+
+---
+
+## 5. QueueEntry
+
+**What it represents:** One customer's ticket/token inside a Queue.
+
+**Reason to exist:** It records a customer's position and current status in the queue.
+
+---
+
+## 6. Notification
+
+**What it represents:** A message sent to a User about their queue status.
+
+**Reason to exist:** It allows QueueLess to inform customers about events such as being called, approaching their turn, or having their ticket status changed.
